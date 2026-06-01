@@ -166,3 +166,44 @@ myData
 
 datas=pd.get_dummies(myData,columns=["color","size"],prefix=["col","siz"])
 datas
+
+data=pd.DataFrame({
+    "Fruits":["Apple","Banana","Orange","Apple","Banana"],
+    "Size":["Small","Medium","Large","Small","Medium"],
+    "Price":[10,20,30,10,20]
+})
+data
+
+#### Price - Price is the numeric value that the ML Algo can understand 
+#### Size  - That is in text format that cant be understood by the ML algo 
+#### Fruits - That is in Text format that also cant be understood by the ML Algos 
+
+encData=pd.get_dummies(data,columns=["Fruits"],prefix=["Frt"],dtype=int)
+encData
+encdata2=pd.get_dummies(data,columns=["Size"],prefix=["Sz"],dtype=int)
+encdata2
+encode_data=pd.get_dummies(data,columns=["Fruits","Size"],prefix=["Frt","Sz"],dtype=int)
+encode_data
+from sklearn.preprocessing import OneHotEncoder
+
+obj=OneHotEncoder()
+data=pd.DataFrame({
+    "Fruits":["Apple","Banana","Orange","Apple","Banana"],
+    "Size":["Small","Medium","Large","Small","Medium"],
+    "Price":[10,20,30,10,20]
+})
+
+
+# Here we have encoded the data using Onehotencoder 
+encoded_data=obj.fit_transform(data[["Fruits","Size"]])
+
+encoded_data.toarray() # here we are getting an array in encoded format 
+
+
+# here we are extratcing  the fearure names or the newly created columns after encoding the data
+feature_names=obj.get_feature_names_out(["Fruits","Size"])
+feature_names
+
+final_data=pd.DataFrame(encoded_data.toarray(),columns=feature_names)
+final_data["New Price"]=data["Price"]
+final_data
